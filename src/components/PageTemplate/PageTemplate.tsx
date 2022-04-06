@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
 
 export const PageTemplateContents = styled.div`
@@ -23,3 +24,23 @@ export const InputPageTemplateContents = styled(PageTemplateContents)`
     width: 435px;
   }
 `;
+
+const Header = styled.div`
+  background-color: #ffd46c;
+  width: 100%;
+  height: 180px;
+  margin-bottom: 40px;
+`;
+
+interface PageTemplateProps {
+  children: ReactNode;
+}
+
+export const PageTemplate = ({ children }: PageTemplateProps): JSX.Element => {
+  return (
+    <div>
+      <Header />
+      {children}
+    </div>
+  );
+};
