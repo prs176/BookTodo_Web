@@ -11,3 +11,15 @@ export const PageTemplateContents = styled.div`
     margin-right: auto;
   }
 `;
+
+export const InputPageTemplateContents = styled(PageTemplateContents)`
+  input {
+    margin-bottom: 10px;
+    width: 400px;
+  }
+  button {
+    margin-top: 90px;
+    margin-bottom: 30px;
+    width: 435px;
+  }
+`;

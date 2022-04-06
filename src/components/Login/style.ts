@@ -1,18 +1,6 @@
 import styled from "styled-components";
-import { PageTemplateContents } from "../PageTemplate/PageTemplate";
 
-export const Template = styled(PageTemplateContents)`
-  input {
-    margin-bottom: 10px;
-    width: 400px;
-  }
-  button {
-    margin-top: 100px;
-    width: 435px;
-  }
-`;
-
-export const TitleTemplate = styled.div`
+export const LogoTemplate = styled.div`
   img {
     width: 100px;
   }
@@ -21,7 +9,7 @@ export const TitleTemplate = styled.div`
   margin-bottom: 60px;
 `;
 
-export const Title = styled.div`
+export const TitleTemplate = styled.div`
   margin-top: auto;
   margin-bottom: auto;
   margin-left: 20px;
@@ -30,7 +18,7 @@ export const Title = styled.div`
   }
 `;
 
-export const RegisterText = styled.div`
+export const RegisterTextTemplate = styled.div`
   display: flex;
   color: gray;
   & > * {
