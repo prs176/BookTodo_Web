@@ -17,7 +17,7 @@ const Login = (): JSX.Element => {
 
       <TextField placeholder="아이디" type="email" />
       <TextField placeholder="비밀번호" type="password" />
-      <LabelButton>로그인</LabelButton>
+      <LabelButton className="submit_button">로그인</LabelButton>
       <RegisterTextTemplate>
         <p>계정이 없으신가요?</p>
         <h3>회원가입</h3>

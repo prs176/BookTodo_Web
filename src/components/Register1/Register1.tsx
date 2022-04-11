@@ -25,7 +25,7 @@ const Register1 = (): JSX.Element => {
         <p>비밀번호 재입력</p>
         <TextField placeholder="비밀번호 재입력" type="password" />
       </div>
-      <LabelButton>로그인</LabelButton>
+      <LabelButton className="submit_button">다음</LabelButton>
     </InputPageTemplateContents>
   );
 };
