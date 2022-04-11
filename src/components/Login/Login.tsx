@@ -1,27 +1,28 @@
 import { LabelButton } from "../Common/Button";
 import { TextField } from "../Common/Input";
 import logo from "../../assets/logo.svg";
-import { Template, TitleTemplate, Title, RegisterText } from "./style";
+import { LogoTemplate, TitleTemplate, RegisterTextTemplate } from "./style";
+import { InputPageTemplateContents } from "../PageTemplate/PageTemplate";
 
 const Login = (): JSX.Element => {
   return (
-    <Template>
-      <TitleTemplate>
+    <InputPageTemplateContents>
+      <LogoTemplate>
         <img src={logo} alt=""></img>
-        <Title>
+        <TitleTemplate>
           <p>독서를 실행하다,</p>
           <h2>북투두</h2>
-        </Title>
-      </TitleTemplate>
+        </TitleTemplate>
+      </LogoTemplate>
 
-      <TextField placeholder="아이디" type="email"></TextField>
-      <TextField placeholder="비밀번호" type="password"></TextField>
+      <TextField placeholder="아이디" type="email" />
+      <TextField placeholder="비밀번호" type="password" />
       <LabelButton>로그인</LabelButton>
-      <RegisterText>
+      <RegisterTextTemplate>
         <p>계정이 없으신가요?</p>
         <h3>회원가입</h3>
-      </RegisterText>
-    </Template>
+      </RegisterTextTemplate>
+    </InputPageTemplateContents>
   );
 };
 
