@@ -18,7 +18,7 @@ const Serach = (): JSX.Element => {
         <SearchInput />
       </Header>
       <PageTemplateContents>
-        <BookListItem isMine={false}></BookListItem>
+        <BookListItem type="search" isMine={false}></BookListItem>
       </PageTemplateContents>
     </div>
   );

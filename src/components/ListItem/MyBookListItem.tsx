@@ -1,12 +1,41 @@
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { BookListItemTemplate, TitleTemplate } from "./style";
+import { useMemo } from "react";
 
 interface Props {
+  type: "search" | "my";
   isMine: boolean;
 }
 
-const BookListItem = ({ isMine }: Props): JSX.Element => {
+const BookListItem = ({ type, isMine }: Props): JSX.Element => {
+  const button = useMemo(() => {
+    if (type === "search") {
+      if (isMine === true) {
+        return <p>이미 추가됨</p>;
+      } else {
+        return (
+          <IconButton>
+            <AddIcon />
+          </IconButton>
+        );
+      }
+    } else {
+      return (
+        <span>
+          <IconButton>
+            <EditIcon />
+          </IconButton>
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </span>
+      );
+    }
+  }, [type, isMine]);
+
   return (
     <BookListItemTemplate>
       <img
@@ -16,13 +45,7 @@ const BookListItem = ({ isMine }: Props): JSX.Element => {
       <div>
         <TitleTemplate>
           <h3>깨어난 괴물</h3>
-          {isMine ? (
-            <p>이미 추가됨</p>
-          ) : (
-            <IconButton>
-              <AddIcon />
-            </IconButton>
-          )}
+          {button}
         </TitleTemplate>
         제임스 S.A. 코리
       </div>
