@@ -27,7 +27,7 @@ export const InputPageTemplateContents = styled(PageTemplateContents)`
 export const Header = styled.div`
   width: 100%;
   height: 180px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   background-color: #ffd46c;
   justify-content: center;
   & > * {
