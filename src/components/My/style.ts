@@ -5,3 +5,7 @@ export const TabTemplate = styled.div`
   min-width: 300px;
   margin-bottom: 20px;
 `;
+
+export const CalendarTemplate = styled.div`
+  width: 100%;
+`;
