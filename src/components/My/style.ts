@@ -19,8 +19,10 @@ export const MyGoalTemplate = styled.div`
   & > * {
     margin-top: 10px;
   }
-  .right {
-    display: flex;
-    justify-content: space-between;
-  }
+`;
+
+export const RightTemplate = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
 `;

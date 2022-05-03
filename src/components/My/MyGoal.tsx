@@ -4,7 +4,7 @@ import {
   LinearProgressProps,
   Typography,
 } from "@mui/material";
-import { MyGoalTemplate } from "./style";
+import { MyGoalTemplate, RightTemplate } from "./style";
 
 interface Props {
   progress: number;
@@ -39,10 +39,10 @@ const MyGoal = ({ progress, goal }: Props): JSX.Element => {
         goal={goal}
         value={(progress / goal) * 100}
       />
-      <div className="right">
+      <RightTemplate>
         <div></div>
         {goal - progress}쪽 남았어요!
-      </div>
+      </RightTemplate>
     </MyGoalTemplate>
   );
 };
