@@ -13,12 +13,17 @@ export const ModalTemplate = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  button {
+    width: 200px;
+  }
+`;
+
+export const ModalContentTemplate = styled.div`
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export const ModalButtonTemplate = styled.div`
-  & > * {
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 47%;
-  }
+  display: flex;
+  justify-content: space-between;
 `;
