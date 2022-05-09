@@ -9,10 +9,11 @@ export const ModalTemplate = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
-  height: 200px;
+  min-height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 20px;
   button {
     width: 200px;
   }
