@@ -11,7 +11,7 @@ interface Props {
   author: string;
   isMine?: boolean;
   addBook?: () => void;
-  editMyBookProgress?: () => void;
+  modifyMyBookProgress?: () => void;
   deleteMyBook?: () => void;
 }
 
@@ -21,7 +21,7 @@ const BookListItem = ({
   author,
   isMine,
   addBook,
-  editMyBookProgress,
+  modifyMyBookProgress,
   deleteMyBook,
 }: Props): JSX.Element => {
   const button = useMemo(() => {
@@ -38,7 +38,7 @@ const BookListItem = ({
     } else {
       return (
         <span>
-          <IconButton onClick={editMyBookProgress}>
+          <IconButton onClick={modifyMyBookProgress}>
             <EditIcon />
           </IconButton>
           <IconButton onClick={deleteMyBook}>
@@ -47,7 +47,7 @@ const BookListItem = ({
         </span>
       );
     }
-  }, [type, isMine, addBook, editMyBookProgress, deleteMyBook]);
+  }, [type, isMine, addBook, modifyMyBookProgress, deleteMyBook]);
 
   return (
     <BookListItemTemplate>
