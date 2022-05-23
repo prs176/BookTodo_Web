@@ -12,7 +12,7 @@ import {
 const ModifyGoalModal = (): JSX.Element => {
   return (
     <ModalTemplate>
-      진척도 수정
+      목표 수정
       <div>
         <p>책 읽을 요일</p>
         <ToggleButtonGroup fullWidth={true}>

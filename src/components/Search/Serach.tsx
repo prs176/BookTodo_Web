@@ -4,21 +4,30 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Header, PageTemplateContents } from "../PageTemplate/PageTemplate";
 import BookListItem from "../ListItem/MyBookListItem";
 import { SearchInput } from "./style";
+import { useNavigate } from "react-router";
 
 const Serach = (): JSX.Element => {
+  const navigate = useNavigate();
+
+  const linkToMain = () => {
+    navigate("/");
+  };
+
   return (
     <div>
       <Header>
-        <IconButton>
+        <IconButton onClick={linkToMain}>
           <HomeIcon />
-        </IconButton>
-        <IconButton>
-          <SearchIcon />
         </IconButton>
         <SearchInput />
       </Header>
       <PageTemplateContents>
-        <BookListItem type="search" isMine={false}></BookListItem>
+        <BookListItem
+          type="search"
+          title="로미"
+          author="로미"
+          isMine={false}
+        ></BookListItem>
       </PageTemplateContents>
     </div>
   );

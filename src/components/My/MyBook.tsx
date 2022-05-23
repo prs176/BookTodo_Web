@@ -3,17 +3,31 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Modal,
   Select,
   SelectChangeEvent,
 } from "@mui/material";
 import { useState } from "react";
 import { TabTemplate } from "./style";
+import ModifyProgressModal from "../Modal/ModifyProgressModal";
+import DeleteModal from "../Modal/DeleteModal";
 
 const MyBook = (): JSX.Element => {
   const [filter, setFilter] = useState("");
-
   const onChangeFilter = (event: SelectChangeEvent) => {
     setFilter(event.target.value as string);
+  };
+
+  const [isOpenModifyProgressModal, setIsOpenModifyProgressModal] =
+    useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+
+  const toggleIsOpenModifyProgressModal = () => {
+    setIsOpenModifyProgressModal(!isOpenModifyProgressModal);
+  };
+
+  const toggleIsOpenDeleteModal = () => {
+    setIsOpenDeleteModal(!isOpenDeleteModal);
   };
 
   return (
@@ -29,7 +43,22 @@ const MyBook = (): JSX.Element => {
           </Select>
         </FormControl>
       </TabTemplate>
-      <BookListItem type="my" isMine={false}></BookListItem>
+      <BookListItem
+        type="my"
+        title="로미"
+        author="로미"
+        modifyMyBookProgress={toggleIsOpenModifyProgressModal}
+        deleteMyBook={toggleIsOpenDeleteModal}
+      ></BookListItem>
+      <Modal
+        open={isOpenModifyProgressModal}
+        onClose={toggleIsOpenModifyProgressModal}
+      >
+        <ModifyProgressModal />
+      </Modal>
+      <Modal open={isOpenDeleteModal} onClose={toggleIsOpenDeleteModal}>
+        <DeleteModal />
+      </Modal>
     </>
   );
 };

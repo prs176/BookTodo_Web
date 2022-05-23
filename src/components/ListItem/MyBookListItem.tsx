@@ -7,17 +7,30 @@ import { useMemo } from "react";
 
 interface Props {
   type: "search" | "my";
-  isMine: boolean;
+  title: string;
+  author: string;
+  isMine?: boolean;
+  addBook?: () => void;
+  modifyMyBookProgress?: () => void;
+  deleteMyBook?: () => void;
 }
 
-const BookListItem = ({ type, isMine }: Props): JSX.Element => {
+const BookListItem = ({
+  type,
+  title,
+  author,
+  isMine,
+  addBook,
+  modifyMyBookProgress,
+  deleteMyBook,
+}: Props): JSX.Element => {
   const button = useMemo(() => {
     if (type === "search") {
       if (isMine === true) {
         return <p>이미 추가됨</p>;
       } else {
         return (
-          <IconButton>
+          <IconButton onClick={addBook}>
             <AddIcon />
           </IconButton>
         );
@@ -25,16 +38,16 @@ const BookListItem = ({ type, isMine }: Props): JSX.Element => {
     } else {
       return (
         <span>
-          <IconButton>
+          <IconButton onClick={modifyMyBookProgress}>
             <EditIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={deleteMyBook}>
             <DeleteIcon />
           </IconButton>
         </span>
       );
     }
-  }, [type, isMine]);
+  }, [type, isMine, addBook, modifyMyBookProgress, deleteMyBook]);
 
   return (
     <BookListItemTemplate>
@@ -44,10 +57,10 @@ const BookListItem = ({ type, isMine }: Props): JSX.Element => {
       ></img>
       <div>
         <TitleTemplate>
-          <h3>깨어난 괴물</h3>
+          <h3>{title}</h3>
           {button}
         </TitleTemplate>
-        제임스 S.A. 코리
+        {author}
       </div>
     </BookListItemTemplate>
   );
