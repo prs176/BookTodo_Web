@@ -29,7 +29,7 @@ const MyBook = (): JSX.Element => {
           </Select>
         </FormControl>
       </TabTemplate>
-      <BookListItem type="my" isMine={false}></BookListItem>
+      <BookListItem type="my" title="로미" author="로미"></BookListItem>
     </>
   );
 };

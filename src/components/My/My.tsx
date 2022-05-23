@@ -9,24 +9,38 @@ import { Header, PageTemplateContents } from "../PageTemplate/PageTemplate";
 import MyBook from "./MyBook";
 import MyCalendar from "./MyCalendar";
 import { TabTemplate } from "./style";
+import { useNavigate } from "react-router";
 
 const My = (): JSX.Element => {
   const [tab, setTab] = useState(0);
+  const navigate = useNavigate();
 
   const onChangeTab = (event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
   };
 
+  const linkToMain = () => {
+    navigate("/");
+  };
+
+  const linkToSearch = () => {
+    navigate("/search");
+  };
+
+  const logout = () => {
+    navigate("/login");
+  };
+
   return (
     <div>
       <Header>
-        <IconButton>
+        <IconButton onClick={linkToMain}>
           <HomeIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={linkToSearch}>
           <SearchIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={logout}>
           <ExitToAppIcon />
         </IconButton>
       </Header>
