@@ -19,10 +19,6 @@ const My = (): JSX.Element => {
     setTab(newValue);
   };
 
-  const linkToMain = () => {
-    navigate("/");
-  };
-
   const linkToSearch = () => {
     navigate("/search");
   };
@@ -34,9 +30,6 @@ const My = (): JSX.Element => {
   return (
     <div>
       <Header>
-        <IconButton onClick={linkToMain}>
-          <HomeIcon />
-        </IconButton>
         <IconButton onClick={linkToSearch}>
           <SearchIcon />
         </IconButton>

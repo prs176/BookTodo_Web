@@ -13,18 +13,11 @@ const Serach = (): JSX.Element => {
     navigate("/");
   };
 
-  const linkToSearch = () => {
-    navigate("/search");
-  };
-
   return (
     <div>
       <Header>
         <IconButton onClick={linkToMain}>
           <HomeIcon />
-        </IconButton>
-        <IconButton onClick={linkToSearch}>
-          <SearchIcon />
         </IconButton>
         <SearchInput />
       </Header>
