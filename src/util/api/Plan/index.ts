@@ -1,0 +1,13 @@
+import { PlanRequest } from "../../../models/request";
+import { PlanData, Response } from "../../../models/response";
+import instance from "../Default";
+
+export const applyPlan = async (request: PlanRequest): Promise<PlanData[]> => {
+  const response = await instance.post<Response<PlanData[]>>("/plan", request);
+  return response.data.response;
+};
+
+export const fetchRecord = async (month: number): Promise<PlanData[]> => {
+  const response = await instance.get<Response<PlanData[]>>("/plan");
+  return response.data.response;
+};
