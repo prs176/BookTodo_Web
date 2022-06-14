@@ -20,6 +20,6 @@ export interface PlanRequest {
   days: number[];
 }
 
-export interface BookRequest {
+export interface MyBookRequest {
   isbn: string;
 }

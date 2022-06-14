@@ -23,15 +23,41 @@ export interface PlanData {
   UserId: number;
 }
 
-export interface BookData {
+export interface MyBookData {
   id: number;
   UserId: number;
   isbn: string;
 }
 
-export interface BookRecordData {
+export interface MyBookRecordData {
   id: number;
   UserId: number;
   isbn: string;
   Records: RecordData[];
+}
+
+export interface KakaoResponse {
+  meta: Meta;
+  documents: BookData[];
+}
+
+interface Meta {
+  is_end: boolean;
+  pageable_count: number;
+  total_count: number;
+}
+
+interface BookData {
+  authors: string[];
+  contents: string;
+  datetime: Date;
+  isbn: string;
+  price: number;
+  publisher: string;
+  sale_price: number;
+  status: string;
+  thumbnail: string;
+  title: string;
+  translators: string[];
+  url: string;
 }

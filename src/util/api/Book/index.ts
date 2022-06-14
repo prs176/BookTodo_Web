@@ -1,32 +1,25 @@
-import { BookRequest } from "../../../models/request";
-import {
-  BookData,
-  BookRecordData,
-  MessageResponse,
-  Response,
-} from "../../../models/response";
-import instance from "../Default";
+import axios, { AxiosError } from "axios";
+import { KakaoResponse } from "../../../models/response";
 
-export const applyMyBook = async (request: BookRequest): Promise<BookData> => {
-  const response = await instance.post<Response<BookData>>("/book", request);
-  return response.data.response;
-};
+const kakaoBaseURL = "https://dapi.kakao.com/v3/search";
 
-export const fetchMyBook = async (): Promise<BookRecordData[]> => {
-  const response = await instance.get<Response<BookRecordData[]>>("/book");
-  return response.data.response;
-};
+const instance = axios.create({
+  baseURL: kakaoBaseURL,
+});
 
-export const fetchMyBookByIsbn = async (
-  isbn: string
-): Promise<BookRecordData> => {
-  const response = await instance.get<Response<BookRecordData>>(
-    `/book/${isbn}`
-  );
-  return response.data.response;
-};
+instance.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error: AxiosError) {
+    return Promise.reject(error);
+  }
+);
 
-export const deleteMyBookByIsbn = async (isbn: string): Promise<void> => {
-  await instance.get<Response<MessageResponse>>(`/book/${isbn}`);
-  return;
+export const fetchBook = async (
+  query: string,
+  page: number
+): Promise<KakaoResponse> => {
+  const response = await instance.get<KakaoResponse>("/book");
+  return response.data;
 };
