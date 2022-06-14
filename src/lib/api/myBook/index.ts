@@ -5,7 +5,7 @@ import {
   MessageResponse,
   Response,
 } from "../../../models/response";
-import instance from "../Default";
+import instance from "../default";
 
 export const applyMyBook = async (
   request: MyBookRequest
