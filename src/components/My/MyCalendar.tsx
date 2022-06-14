@@ -6,6 +6,7 @@ import MyGoal from "./MyGoal";
 import { CalendarTemplate, RightTemplate } from "./style";
 import { useState } from "react";
 import ModifyGoalModal from "../Modal/ModifyGoalModal";
+import React from "react";
 
 const MyCalendar = (): JSX.Element => {
   const [isOpenModifyGoalModal, setIsOpenModifyGoalModal] = useState(false);

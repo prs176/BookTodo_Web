@@ -1,6 +1,6 @@
 import { RecordRequest } from "../../../models/request";
 import { RecordData, Response } from "../../../models/response";
-import instance from "../Default";
+import instance from "../default";
 
 export const applyRecord = async (
   request: RecordRequest
