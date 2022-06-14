@@ -1,5 +1,6 @@
 import { LabelButton } from "../Common/Button";
 import { ModalTemplate } from "./style";
+import React from "react";
 
 const DeleteModal = (): JSX.Element => {
   return (

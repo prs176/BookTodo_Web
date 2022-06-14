@@ -11,6 +11,7 @@ import { useState } from "react";
 import { TabTemplate } from "./style";
 import ModifyProgressModal from "../Modal/ModifyProgressModal";
 import DeleteModal from "../Modal/DeleteModal";
+import React from "react";
 
 const MyBook = (): JSX.Element => {
   const [filter, setFilter] = useState("");
@@ -18,8 +19,9 @@ const MyBook = (): JSX.Element => {
     setFilter(event.target.value as string);
   };
 
-  const [isOpenModifyProgressModal, setIsOpenModifyProgressModal] =
-    useState(false);
+  const [isOpenModifyProgressModal, setIsOpenModifyProgressModal] = useState(
+    false
+  );
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
   const toggleIsOpenModifyProgressModal = () => {

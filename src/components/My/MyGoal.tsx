@@ -5,6 +5,7 @@ import {
   Typography,
 } from "@mui/material";
 import { MyGoalTemplate, RightTemplate } from "./style";
+import React from "react";
 
 interface Props {
   progress: number;

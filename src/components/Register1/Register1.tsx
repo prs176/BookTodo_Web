@@ -4,6 +4,7 @@ import {
   Header,
   InputPageTemplateContents,
 } from "../PageTemplate/PageTemplate";
+import React from "react";
 
 const Register1 = (): JSX.Element => {
   return (

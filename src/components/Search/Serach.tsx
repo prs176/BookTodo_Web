@@ -5,6 +5,7 @@ import { Header, PageTemplateContents } from "../PageTemplate/PageTemplate";
 import BookListItem from "../ListItem/MyBookListItem";
 import { SearchInput } from "./style";
 import { useNavigate } from "react-router";
+import React from "react";
 
 const Serach = (): JSX.Element => {
   const navigate = useNavigate();

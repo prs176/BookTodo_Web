@@ -3,6 +3,7 @@ import { TextField } from "../Common/Input";
 import logo from "../../assets/logo.svg";
 import { LogoTemplate, TitleTemplate, RegisterTextTemplate } from "./style";
 import { InputPageTemplateContents } from "../PageTemplate/PageTemplate";
+import React from "react";
 
 const Login = (): JSX.Element => {
   return (
