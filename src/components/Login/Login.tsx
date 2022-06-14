@@ -38,7 +38,7 @@ const Login = (): JSX.Element => {
   };
 
   const linkToRegister = () => {
-    navigate("/register1");
+    navigate("/register");
   };
 
   return (
