@@ -17,10 +17,11 @@ import {
   MessageResponse,
   MyBookRecordData,
 } from "../../models/response";
-import { fetchMyBook } from "../../lib/api/myBook";
+import { deleteMyBookByIsbn, fetchMyBook } from "../../lib/api/myBook";
 import { AxiosError } from "axios";
 import { useEffect } from "react";
 import { fetchBook } from "../../lib/api/book";
+import { applyRecord } from "../../lib/api/record";
 
 const MyBook = (): JSX.Element => {
   const [filter, setFilter] = useState("");
@@ -30,11 +31,16 @@ const MyBook = (): JSX.Element => {
   );
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  const [records, setRecords] = useState<MyBookRecordData[]>([]);
-  const [books, setBooks] = useState<BookData[]>([]);
+  const [myBooks, setMyBooks] = useState<
+    { record: MyBookRecordData; book: BookData }[]
+  >([]);
+  const [selectedBook, setSelectedBook] = useState<{
+    record: MyBookRecordData;
+    book: BookData;
+  }>();
 
   const onChangeFilter = (event: SelectChangeEvent) => {
-    setFilter(event.target.value as string);
+    setFilter(event.target.value);
   };
 
   const toggleIsOpenModifyProgressModal = () => {
@@ -48,13 +54,12 @@ const MyBook = (): JSX.Element => {
   const onFetchMyBooks = async () => {
     try {
       const response = await fetchMyBook();
-      setRecords(response);
 
       Promise.all(
         response.map(async (record) => {
           try {
             const response = await fetchBook(record.isbn, 1);
-            return response.documents[0];
+            return { record, book: response.documents[0] };
           } catch (err) {
             const axiosError = err as AxiosError;
             if (axiosError.response) {
@@ -64,7 +69,12 @@ const MyBook = (): JSX.Element => {
           }
         })
       ).then((books) => {
-        setBooks(books.filter((book) => book) as BookData[]);
+        setMyBooks(
+          books.filter((book) => book) as {
+            record: MyBookRecordData;
+            book: BookData;
+          }[]
+        );
       });
     } catch (err) {
       const axiosError = err as AxiosError;
@@ -76,31 +86,93 @@ const MyBook = (): JSX.Element => {
 
   useEffect(() => {
     onFetchMyBooks();
-  }, [setBooks, setRecords, filter]);
+  }, [setMyBooks, filter]);
 
   const bookList = () => {
-    return books.map((book) => {
-      const record = records.filter(
-        (record) => record.isbn === book.isbn.split(" ")[0]
-      )[0];
-      const page = record.Records.map((record) => record.page).reduce(
-        (a, b) => a + b,
-        0
-      );
-
+    return myBooks.map((myBook) => {
       return (
         <BookListItem
           type="my"
-          title={book.title}
-          author={book.authors.join(" ")}
-          image={book.thumbnail}
-          progress={page}
-          goal={record.page}
-          modifyMyBookProgress={toggleIsOpenModifyProgressModal}
-          deleteMyBook={toggleIsOpenDeleteModal}
+          title={myBook.book.title}
+          author={myBook.book.authors.join(" ")}
+          image={myBook.book.thumbnail}
+          progress={myBook.record.Records.map((record) => record.page).reduce(
+            (a, b) => a + b,
+            0
+          )}
+          goal={myBook.record.page}
+          modifyMyBookProgress={() => {
+            setSelectedBook(myBook);
+            toggleIsOpenModifyProgressModal();
+          }}
+          deleteMyBook={() => {
+            setSelectedBook(myBook);
+            toggleIsOpenDeleteModal();
+          }}
         ></BookListItem>
       );
     });
+  };
+
+  const onModifyMyBookProgress = async (page: number) => {
+    try {
+      if (
+        page +
+          selectedBook!.record.Records.map((record) => record.page).reduce(
+            (a, b) => a + b,
+            0
+          ) >
+        selectedBook!.record.page
+      ) {
+        alert("읽은 쪽수가 전체 페이지 수를 넘습니다.");
+        return;
+      }
+      const response = await applyRecord({
+        isbn: selectedBook!.record.isbn,
+        page,
+      });
+      setMyBooks(
+        myBooks.map((myBook) => {
+          if (myBook.record.isbn === selectedBook!.record.isbn) {
+            let isChanged = false;
+            const newRecords = myBook.record.Records.map((record) => {
+              if (record.id === response.id) {
+                isChanged = true;
+                return response;
+              }
+              return record;
+            });
+            if (!isChanged) {
+              newRecords.push(response);
+            }
+            myBook.record.Records = newRecords;
+            return myBook;
+          }
+          return myBook;
+        })
+      );
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      if (axiosError.response) {
+        alert((axiosError.response.data as MessageResponse).message);
+      }
+    }
+  };
+
+  const onDeleteMyBook = async () => {
+    try {
+      await deleteMyBookByIsbn(selectedBook!.book.isbn.split(" ")[0]);
+      setMyBooks(
+        myBooks.filter(
+          (myBook) => myBook.record.isbn !== selectedBook!.record.isbn
+        )
+      );
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      if (axiosError.response) {
+        alert((axiosError.response.data as MessageResponse).message);
+      }
+    }
   };
 
   return (
@@ -123,10 +195,22 @@ const MyBook = (): JSX.Element => {
         open={isOpenModifyProgressModal}
         onClose={toggleIsOpenModifyProgressModal}
       >
-        <ModifyProgressModal />
+        <ModifyProgressModal
+          goal={selectedBook ? selectedBook.record.page : 0}
+          modifyMyBookProgress={(page: number) => {
+            onModifyMyBookProgress(page);
+            toggleIsOpenModifyProgressModal();
+          }}
+        />
       </Modal>
       <Modal open={isOpenDeleteModal} onClose={toggleIsOpenDeleteModal}>
-        <DeleteModal />
+        <DeleteModal
+          deleteMyBook={() => {
+            onDeleteMyBook();
+            toggleIsOpenDeleteModal();
+          }}
+          closeDeleteModal={toggleIsOpenDeleteModal}
+        />
       </Modal>
     </>
   );
