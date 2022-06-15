@@ -27,12 +27,14 @@ export interface MyBookData {
   id: number;
   UserId: number;
   isbn: string;
+  page: number;
 }
 
 export interface MyBookRecordData {
   id: number;
   UserId: number;
   isbn: string;
+  page: number;
   Records: RecordData[];
 }
 
