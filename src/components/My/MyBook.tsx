@@ -12,17 +12,30 @@ import { TabTemplate } from "./style";
 import ModifyProgressModal from "../Modal/ModifyProgressModal";
 import DeleteModal from "../Modal/DeleteModal";
 import React from "react";
+import {
+  BookData,
+  MessageResponse,
+  MyBookRecordData,
+} from "../../models/response";
+import { fetchMyBook } from "../../lib/api/myBook";
+import { AxiosError } from "axios";
+import { useEffect } from "react";
+import { fetchBook } from "../../lib/api/book";
 
 const MyBook = (): JSX.Element => {
   const [filter, setFilter] = useState("");
-  const onChangeFilter = (event: SelectChangeEvent) => {
-    setFilter(event.target.value as string);
-  };
 
   const [isOpenModifyProgressModal, setIsOpenModifyProgressModal] = useState(
     false
   );
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+
+  const [records, setRecords] = useState<MyBookRecordData[]>([]);
+  const [books, setBooks] = useState<BookData[]>([]);
+
+  const onChangeFilter = (event: SelectChangeEvent) => {
+    setFilter(event.target.value as string);
+  };
 
   const toggleIsOpenModifyProgressModal = () => {
     setIsOpenModifyProgressModal(!isOpenModifyProgressModal);
@@ -30,6 +43,54 @@ const MyBook = (): JSX.Element => {
 
   const toggleIsOpenDeleteModal = () => {
     setIsOpenDeleteModal(!isOpenDeleteModal);
+  };
+
+  const onFetchMyBooks = async () => {
+    try {
+      const response = await fetchMyBook();
+      setRecords(response);
+
+      Promise.all(
+        response.map(async (record) => {
+          try {
+            const response = await fetchBook(record.isbn, 1);
+            return response.documents[0];
+          } catch (err) {
+            const axiosError = err as AxiosError;
+            if (axiosError.response) {
+              alert((axiosError.response.data as MessageResponse).message);
+            }
+            return null;
+          }
+        })
+      ).then((books) => {
+        setBooks(books.filter((book) => book) as BookData[]);
+      });
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      if (axiosError.response) {
+        alert((axiosError.response.data as MessageResponse).message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    onFetchMyBooks();
+  }, [setBooks, setRecords, filter]);
+
+  const bookList = () => {
+    return books.map((book) => {
+      return (
+        <BookListItem
+          type="my"
+          title={book.title}
+          author={book.authors.join(" ")}
+          image={book.thumbnail}
+          modifyMyBookProgress={toggleIsOpenModifyProgressModal}
+          deleteMyBook={toggleIsOpenDeleteModal}
+        ></BookListItem>
+      );
+    });
   };
 
   return (
@@ -45,15 +106,9 @@ const MyBook = (): JSX.Element => {
           </Select>
         </FormControl>
       </TabTemplate>
-      <BookListItem
-        type="my"
-        isbn="123"
-        title="로미"
-        author="로미"
-        image="https://image.aladin.co.kr/product/7492/10/cover500/k592535780_1.jpg"
-        modifyMyBookProgress={toggleIsOpenModifyProgressModal}
-        deleteMyBook={toggleIsOpenDeleteModal}
-      ></BookListItem>
+
+      {bookList()}
+
       <Modal
         open={isOpenModifyProgressModal}
         onClose={toggleIsOpenModifyProgressModal}

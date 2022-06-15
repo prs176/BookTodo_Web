@@ -9,11 +9,10 @@ import React from "react";
 interface Props {
   type: "search" | "my";
   title: string;
-  isbn: string;
   author: string;
   image: string;
   isMine?: boolean;
-  addBook?: (isbn: string) => void;
+  openAddMyBookModel?: () => void;
   modifyMyBookProgress?: () => void;
   deleteMyBook?: () => void;
 }
@@ -21,11 +20,10 @@ interface Props {
 const BookListItem = ({
   type,
   title,
-  isbn,
   author,
   image,
   isMine,
-  addBook,
+  openAddMyBookModel,
   modifyMyBookProgress,
   deleteMyBook,
 }: Props): JSX.Element => {
@@ -35,7 +33,7 @@ const BookListItem = ({
         return <p>이미 추가됨</p>;
       } else {
         return (
-          <IconButton onClick={() => addBook!(isbn)}>
+          <IconButton onClick={openAddMyBookModel}>
             <AddIcon />
           </IconButton>
         );
@@ -52,7 +50,7 @@ const BookListItem = ({
         </span>
       );
     }
-  }, [type, isMine, addBook, modifyMyBookProgress, deleteMyBook]);
+  }, [type, isMine, openAddMyBookModel, modifyMyBookProgress, deleteMyBook]);
 
   return (
     <BookListItemTemplate>

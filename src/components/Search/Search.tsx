@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { IconButton, Modal } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import { Header, PageTemplateContents } from "../PageTemplate/PageTemplate";
 import BookListItem from "../ListItem/MyBookListItem";
@@ -9,18 +9,25 @@ import { BookData, MessageResponse } from "../../models/response";
 import { fetchBook } from "../../lib/api/book";
 import { AxiosError } from "axios";
 import { applyMyBook, fetchMyBookByIsbn } from "../../lib/api/myBook";
+import AddMyBookModal from "../Modal/AddMyBookModal";
 
 const Search = (): JSX.Element => {
   const navigate = useNavigate();
 
+  const [isOpenAddMyBookModal, setIsOpenAddMyBookModal] = useState(false);
+
   const [isNone, setIsNone] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [books, setBooks] = useState<{ book: BookData; isMine: boolean }[]>([]);
+  const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
 
   const linkToMain = () => {
     console.log(process.env.REACT_APP_KAKAO_API_KEY);
     navigate("/");
   };
+
+  const toggleIsOpenAddMyBookModal = () =>
+    setIsOpenAddMyBookModal(!isOpenAddMyBookModal);
 
   const onChangeKeyword = (e: React.ChangeEvent<HTMLInputElement>) =>
     setKeyword(e.target.value);
@@ -63,29 +70,30 @@ const Search = (): JSX.Element => {
   };
 
   const bookList = () => {
-    const result = [];
-    for (let i = 0; i < books.length; i++) {
-      result.push(
+    return books.map((book) => {
+      return (
         <BookListItem
+          key={book.book.isbn}
           type="search"
-          title={books[i].book.title}
-          isbn={books[i].book.isbn.split(" ")[0]}
-          author={books[i].book.authors.join(" ")}
-          image={books[i].book.thumbnail}
-          isMine={books[i].isMine}
-          addBook={onAddBook}
+          title={book.book.title}
+          author={book.book.authors.join(" ")}
+          image={book.book.thumbnail}
+          isMine={book.isMine}
+          openAddMyBookModel={() => {
+            setSelectedBookIsbn(book.book.isbn.split(" ")[0]);
+            toggleIsOpenAddMyBookModal();
+          }}
         ></BookListItem>
       );
-    }
-    return result;
+    });
   };
 
-  const onAddBook = async (isbn: string) => {
+  const onAddBook = async (page: number) => {
     try {
-      await applyMyBook({ isbn });
+      await applyMyBook({ isbn: selectedBookIsbn, page });
       setBooks(
         books.map((book) => {
-          if (book.book.isbn.split(" ")[0] === isbn) {
+          if (book.book.isbn.split(" ")[0] === selectedBookIsbn) {
             return {
               book: book.book,
               isMine: true,
@@ -95,6 +103,7 @@ const Search = (): JSX.Element => {
         })
       );
       alert("추가되었습니다.");
+      toggleIsOpenAddMyBookModal();
     } catch (err) {
       const axiosError = err as AxiosError;
       if (axiosError.response) {
@@ -104,7 +113,7 @@ const Search = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <>
       <Header>
         <IconButton onClick={linkToMain}>
           <HomeIcon />
@@ -120,7 +129,11 @@ const Search = (): JSX.Element => {
         {isNone ? <p>검색결과가 없습니다.</p> : <></>}
         {bookList()}
       </PageTemplateContents>
-    </div>
+
+      <Modal open={isOpenAddMyBookModal} onClose={toggleIsOpenAddMyBookModal}>
+        <AddMyBookModal addBook={onAddBook} />
+      </Modal>
+    </>
   );
 };
 
