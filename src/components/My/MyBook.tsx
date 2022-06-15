@@ -24,7 +24,7 @@ import { fetchBook } from "../../lib/api/book";
 import { applyRecord } from "../../lib/api/record";
 
 const MyBook = (): JSX.Element => {
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState("0");
 
   const [isOpenModifyProgressModal, setIsOpenModifyProgressModal] = useState(
     false
@@ -32,6 +32,9 @@ const MyBook = (): JSX.Element => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
   const [myBooks, setMyBooks] = useState<
+    { record: MyBookRecordData; book: BookData }[]
+  >([]);
+  const [filteredMyBooks, setFilteredMyBooks] = useState<
     { record: MyBookRecordData; book: BookData }[]
   >([]);
   const [selectedBook, setSelectedBook] = useState<{
@@ -86,10 +89,43 @@ const MyBook = (): JSX.Element => {
 
   useEffect(() => {
     onFetchMyBooks();
-  }, [setMyBooks, filter]);
+  }, [setMyBooks]);
+
+  useEffect(() => {
+    if (filter === "1") {
+      setFilteredMyBooks(
+        myBooks.filter(
+          (myBook) =>
+            myBook.record.Records.length > 0 &&
+            myBook.record.Records.map((record) => record.page).reduce(
+              (a, b) => a + b,
+              0
+            ) < myBook.record.page
+        )
+      );
+    } else if (filter === "2") {
+      setFilteredMyBooks(
+        myBooks.filter(
+          (myBook) =>
+            myBook.record.Records.map((record) => record.page).reduce(
+              (a, b) => a + b,
+              0
+            ) === myBook.record.page
+        )
+      );
+    } else if (filter === "3") {
+      setFilteredMyBooks(
+        myBooks.filter((myBook) => myBook.record.Records.length <= 0)
+      );
+    }
+  }, [filter, myBooks, setFilteredMyBooks]);
 
   const bookList = () => {
-    return myBooks.map((myBook) => {
+    let books = filteredMyBooks;
+    if (filter === "0") {
+      books = myBooks;
+    }
+    return books.map((myBook) => {
       return (
         <BookListItem
           type="my"
@@ -181,10 +217,10 @@ const MyBook = (): JSX.Element => {
         <FormControl fullWidth size="small">
           <InputLabel>필터</InputLabel>
           <Select value={filter} onChange={onChangeFilter} label="필터">
-            <MenuItem value={0}>전체</MenuItem>
-            <MenuItem value={1}>읽고 있는 책</MenuItem>
-            <MenuItem value={2}>완료한 책</MenuItem>
-            <MenuItem value={3}>기다리는 책</MenuItem>
+            <MenuItem value={"0"}>전체</MenuItem>
+            <MenuItem value={"1"}>읽고 있는 책</MenuItem>
+            <MenuItem value={"2"}>완료한 책</MenuItem>
+            <MenuItem value={"3"}>기다리는 책</MenuItem>
           </Select>
         </FormControl>
       </TabTemplate>
