@@ -15,3 +15,13 @@ export const login = async (request: LoginRequest): Promise<string> => {
   sessionStorage.setItem("token", data.response);
   return data.response;
 };
+
+export const fetchGoal = async (): Promise<number> => {
+  const { data } = await instance.get<Response<number>>("/user/");
+  return data.response;
+};
+
+export const modifyGoal = async (goal: number): Promise<number> => {
+  const { data } = await instance.put<Response<number>>(`/user/${goal}`);
+  return data.response;
+};

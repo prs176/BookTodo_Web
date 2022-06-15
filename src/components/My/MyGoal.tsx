@@ -10,6 +10,7 @@ import React from "react";
 interface Props {
   progress: number;
   goal: number;
+  isPlanedDay: boolean;
 }
 
 export const LinearProgressWithLabel = (
@@ -30,20 +31,28 @@ export const LinearProgressWithLabel = (
   );
 };
 
-const MyGoal = ({ progress, goal }: Props): JSX.Element => {
+const MyGoal = ({ progress, goal, isPlanedDay }: Props): JSX.Element => {
   return (
     <MyGoalTemplate>
-      오늘의 목표
-      <LinearProgressWithLabel
-        variant="determinate"
-        progress={progress}
-        goal={goal}
-        value={(progress / goal) * 100}
-      />
-      <RightTemplate>
-        <div></div>
-        {goal - progress}쪽 남았어요!
-      </RightTemplate>
+      {isPlanedDay ? (
+        <>
+          오늘의 목표
+          <LinearProgressWithLabel
+            variant="determinate"
+            progress={progress}
+            goal={goal}
+            value={goal > progress ? (progress / goal) * 100 : 100}
+          />
+          <RightTemplate>
+            <div></div>
+            {goal > progress
+              ? `${goal - progress}쪽 남았어요!`
+              : "도전을 달성했어요!🎉"}
+          </RightTemplate>
+        </>
+      ) : (
+        <>오늘은 목표가 설정되어 있지 않아요.</>
+      )}
     </MyGoalTemplate>
   );
 };
