@@ -47,8 +47,10 @@ const MyBook = (): JSX.Element => {
       </TabTemplate>
       <BookListItem
         type="my"
+        isbn="123"
         title="로미"
         author="로미"
+        image="https://image.aladin.co.kr/product/7492/10/cover500/k592535780_1.jpg"
         modifyMyBookProgress={toggleIsOpenModifyProgressModal}
         deleteMyBook={toggleIsOpenDeleteModal}
       ></BookListItem>

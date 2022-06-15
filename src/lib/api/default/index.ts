@@ -23,8 +23,7 @@ instance.interceptors.response.use(
 export const kakaoInstance = axios.create({
   baseURL: kakaoBaseURL,
   headers: {
-    Authorization: `KakaoAK ${process.env.KAKAO_API_KEY}`,
-    "Access-Control-Allow-Origin": "*",
+    Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_API_KEY}`,
   },
 });
 

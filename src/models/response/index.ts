@@ -47,7 +47,7 @@ interface Meta {
   total_count: number;
 }
 
-interface BookData {
+export interface BookData {
   authors: string[];
   contents: string;
   datetime: Date;

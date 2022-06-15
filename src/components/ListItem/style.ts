@@ -6,6 +6,7 @@ export const BookListItemTemplate = styled.div`
   padding: 20px;
   display: flex;
   flex-shrink: 0;
+  margin-bottom: 10px;
   img {
     width: 120px;
     height: 120px;

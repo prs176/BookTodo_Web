@@ -9,9 +9,11 @@ import React from "react";
 interface Props {
   type: "search" | "my";
   title: string;
+  isbn: string;
   author: string;
+  image: string;
   isMine?: boolean;
-  addBook?: () => void;
+  addBook?: (isbn: string) => void;
   modifyMyBookProgress?: () => void;
   deleteMyBook?: () => void;
 }
@@ -19,7 +21,9 @@ interface Props {
 const BookListItem = ({
   type,
   title,
+  isbn,
   author,
+  image,
   isMine,
   addBook,
   modifyMyBookProgress,
@@ -31,7 +35,7 @@ const BookListItem = ({
         return <p>이미 추가됨</p>;
       } else {
         return (
-          <IconButton onClick={addBook}>
+          <IconButton onClick={() => addBook!(isbn)}>
             <AddIcon />
           </IconButton>
         );
@@ -52,10 +56,7 @@ const BookListItem = ({
 
   return (
     <BookListItemTemplate>
-      <img
-        alt=""
-        src="https://image.aladin.co.kr/product/7492/10/cover500/k592535780_1.jpg"
-      ></img>
+      <img alt="" src={image}></img>
       <div>
         <TitleTemplate>
           <h3>{title}</h3>

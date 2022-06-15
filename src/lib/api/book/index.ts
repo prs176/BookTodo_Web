@@ -5,6 +5,8 @@ export const fetchBook = async (
   query: string,
   page: number
 ): Promise<KakaoResponse> => {
-  const response = await kakaoInstance.get<KakaoResponse>("/book");
+  const response = await kakaoInstance.get<KakaoResponse>(
+    `/book?query=${query}&page=${page}`
+  );
   return response.data;
 };
