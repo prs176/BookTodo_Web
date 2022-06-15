@@ -12,7 +12,7 @@ interface Props {
   goal: number;
 }
 
-const LinearProgressWithLabel = (
+export const LinearProgressWithLabel = (
   props: LinearProgressProps & { progress: number; goal: number }
 ) => {
   return (

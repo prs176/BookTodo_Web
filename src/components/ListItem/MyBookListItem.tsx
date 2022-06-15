@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { BookListItemTemplate, TitleTemplate } from "./style";
 import { useMemo } from "react";
 import React from "react";
+import { LinearProgressWithLabel } from "../My/MyGoal";
 
 interface Props {
   type: "search" | "my";
@@ -12,6 +13,8 @@ interface Props {
   author: string;
   image: string;
   isMine?: boolean;
+  progress?: number;
+  goal?: number;
   openAddMyBookModel?: () => void;
   modifyMyBookProgress?: () => void;
   deleteMyBook?: () => void;
@@ -23,6 +26,8 @@ const BookListItem = ({
   author,
   image,
   isMine,
+  progress,
+  goal,
   openAddMyBookModel,
   modifyMyBookProgress,
   deleteMyBook,
@@ -61,6 +66,18 @@ const BookListItem = ({
           {button}
         </TitleTemplate>
         {author}
+        <div>
+          {type === "my" ? (
+            <LinearProgressWithLabel
+              variant="determinate"
+              progress={progress!}
+              goal={goal!}
+              value={(progress! / goal!) * 100}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     </BookListItemTemplate>
   );

@@ -80,12 +80,22 @@ const MyBook = (): JSX.Element => {
 
   const bookList = () => {
     return books.map((book) => {
+      const record = records.filter(
+        (record) => record.isbn === book.isbn.split(" ")[0]
+      )[0];
+      const page = record.Records.map((record) => record.page).reduce(
+        (a, b) => a + b,
+        0
+      );
+
       return (
         <BookListItem
           type="my"
           title={book.title}
           author={book.authors.join(" ")}
           image={book.thumbnail}
+          progress={page}
+          goal={record.page}
           modifyMyBookProgress={toggleIsOpenModifyProgressModal}
           deleteMyBook={toggleIsOpenDeleteModal}
         ></BookListItem>
