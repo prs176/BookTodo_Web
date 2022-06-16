@@ -5,13 +5,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { BookListItemTemplate, TitleTemplate } from "./style";
 import { useMemo } from "react";
 import React from "react";
+import { LinearProgressWithLabel } from "../My/MyGoal";
 
 interface Props {
   type: "search" | "my";
   title: string;
   author: string;
+  image: string;
   isMine?: boolean;
-  addBook?: () => void;
+  progress?: number;
+  goal?: number;
+  openAddMyBookModel?: () => void;
   modifyMyBookProgress?: () => void;
   deleteMyBook?: () => void;
 }
@@ -20,8 +24,11 @@ const BookListItem = ({
   type,
   title,
   author,
+  image,
   isMine,
-  addBook,
+  progress,
+  goal,
+  openAddMyBookModel,
   modifyMyBookProgress,
   deleteMyBook,
 }: Props): JSX.Element => {
@@ -31,7 +38,7 @@ const BookListItem = ({
         return <p>이미 추가됨</p>;
       } else {
         return (
-          <IconButton onClick={addBook}>
+          <IconButton onClick={openAddMyBookModel}>
             <AddIcon />
           </IconButton>
         );
@@ -48,20 +55,29 @@ const BookListItem = ({
         </span>
       );
     }
-  }, [type, isMine, addBook, modifyMyBookProgress, deleteMyBook]);
+  }, [type, isMine, openAddMyBookModel, modifyMyBookProgress, deleteMyBook]);
 
   return (
     <BookListItemTemplate>
-      <img
-        alt=""
-        src="https://image.aladin.co.kr/product/7492/10/cover500/k592535780_1.jpg"
-      ></img>
+      <img alt="" src={image}></img>
       <div>
         <TitleTemplate>
           <h3>{title}</h3>
           {button}
         </TitleTemplate>
         {author}
+        <div>
+          {type === "my" ? (
+            <LinearProgressWithLabel
+              variant="determinate"
+              progress={progress!}
+              goal={goal!}
+              value={(progress! / goal!) * 100}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     </BookListItemTemplate>
   );

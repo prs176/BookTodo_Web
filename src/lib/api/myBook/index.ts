@@ -29,6 +29,6 @@ export const fetchMyBookByIsbn = async (
 };
 
 export const deleteMyBookByIsbn = async (isbn: string): Promise<void> => {
-  await instance.get<Response<MessageResponse>>(`/book/${isbn}`);
+  await instance.delete<Response<MessageResponse>>(`/book/${isbn}`);
   return;
 };

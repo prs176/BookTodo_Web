@@ -22,4 +22,5 @@ export interface PlanRequest {
 
 export interface MyBookRequest {
   isbn: string;
+  page: number;
 }

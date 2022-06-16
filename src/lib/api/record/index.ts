@@ -14,7 +14,7 @@ export const applyRecord = async (
 
 export const fetchRecord = async (month: number): Promise<RecordData[]> => {
   const response = await instance.get<Response<RecordData[]>>(
-    `/user/login/${month}`
+    `/record/${month}`
   );
   return response.data.response;
 };

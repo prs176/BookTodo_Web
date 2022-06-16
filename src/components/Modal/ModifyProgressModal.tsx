@@ -8,8 +8,19 @@ import {
   ModalTemplate,
 } from "./style";
 
-const ModifyProgressModal = (): JSX.Element => {
+interface Props {
+  goal: number;
+  modifyMyBookProgress: (page: number) => void;
+}
+
+const ModifyProgressModal = ({
+  goal,
+  modifyMyBookProgress,
+}: Props): JSX.Element => {
   const [page, setPage] = useState<number>(0);
+
+  const onChangePage = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPage(parseInt(e.target.value));
 
   return (
     <ModalTemplate>
@@ -17,12 +28,15 @@ const ModifyProgressModal = (): JSX.Element => {
       <ModalContentTemplate>
         지금까지 읽은 쪽 수
         <div>
-          <TextField /> / {page}쪽
+          <TextField type="number" value={page} onChange={onChangePage} /> /{" "}
+          {goal}쪽
         </div>
       </ModalContentTemplate>
       <ModalButtonTemplate>
         <div></div>
-        <LabelButton>완료</LabelButton>
+        <LabelButton onClick={() => modifyMyBookProgress(page)}>
+          완료
+        </LabelButton>
       </ModalButtonTemplate>
     </ModalTemplate>
   );

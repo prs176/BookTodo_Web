@@ -14,6 +14,7 @@ export interface RecordData {
   page: number;
   date: Date;
   isbn: string;
+  BookId: number;
   UserId: number;
 }
 
@@ -27,12 +28,14 @@ export interface MyBookData {
   id: number;
   UserId: number;
   isbn: string;
+  page: number;
 }
 
 export interface MyBookRecordData {
   id: number;
   UserId: number;
   isbn: string;
+  page: number;
   Records: RecordData[];
 }
 
@@ -47,7 +50,7 @@ interface Meta {
   total_count: number;
 }
 
-interface BookData {
+export interface BookData {
   authors: string[];
   contents: string;
   datetime: Date;

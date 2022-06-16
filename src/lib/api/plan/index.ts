@@ -7,7 +7,7 @@ export const applyPlan = async (request: PlanRequest): Promise<PlanData[]> => {
   return response.data.response;
 };
 
-export const fetchRecord = async (month: number): Promise<PlanData[]> => {
+export const fetchPlan = async (): Promise<PlanData[]> => {
   const response = await instance.get<Response<PlanData[]>>("/plan");
   return response.data.response;
 };
