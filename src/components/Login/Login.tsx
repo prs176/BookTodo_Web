@@ -29,6 +29,7 @@ const Login = (): JSX.Element => {
     try {
       await login({ email: id, password });
       navigate("/");
+      window.location.reload();
     } catch (err) {
       const axiosError = err as AxiosError;
       if (axiosError.response) {

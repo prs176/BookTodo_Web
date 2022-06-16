@@ -12,6 +12,7 @@ export const login = async (request: LoginRequest): Promise<string> => {
     "/user/login",
     request
   );
+  sessionStorage.removeItem("token");
   sessionStorage.setItem("token", data.response);
   return data.response;
 };

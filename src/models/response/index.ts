@@ -13,7 +13,7 @@ export interface RecordData {
   id: number;
   page: number;
   date: Date;
-  isbn: string;
+  BookId: number;
   UserId: number;
 }
 
