@@ -128,6 +128,7 @@ const MyBook = (): JSX.Element => {
     return books.map((myBook) => {
       return (
         <BookListItem
+          key={myBook.book.isbn}
           type="my"
           title={myBook.book.title}
           author={myBook.book.authors.join(" ")}
@@ -164,7 +165,7 @@ const MyBook = (): JSX.Element => {
         return;
       }
       const response = await applyRecord({
-        isbn: selectedBook!.record.isbn,
+        isbn: selectedBook!.record.isbn.split(" ")[0],
         page,
       });
       setMyBooks(

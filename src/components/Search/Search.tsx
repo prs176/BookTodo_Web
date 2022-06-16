@@ -1,15 +1,20 @@
-import { IconButton, Modal } from "@mui/material";
+import { IconButton, Modal, Pagination } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import { Header, PageTemplateContents } from "../PageTemplate/PageTemplate";
 import BookListItem from "../ListItem/MyBookListItem";
 import { SearchInput } from "./style";
 import { useNavigate } from "react-router";
 import React, { useState } from "react";
-import { BookData, MessageResponse } from "../../models/response";
+import { BookData, MessageResponse, MyBookData } from "../../models/response";
 import { fetchBook } from "../../lib/api/book";
 import { AxiosError } from "axios";
-import { applyMyBook, fetchMyBookByIsbn } from "../../lib/api/myBook";
+import {
+  applyMyBook,
+  fetchMyBook,
+  fetchMyBookByIsbn,
+} from "../../lib/api/myBook";
 import AddMyBookModal from "../Modal/AddMyBookModal";
+import { useCallback } from "react";
 
 const Search = (): JSX.Element => {
   const navigate = useNavigate();
@@ -18,8 +23,12 @@ const Search = (): JSX.Element => {
 
   const [isNone, setIsNone] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const [myBooks, setMyBooks] = useState<MyBookData[]>([]);
   const [books, setBooks] = useState<{ book: BookData; isMine: boolean }[]>([]);
   const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
+
+  const [pageableCount, setPageableCount] = useState(0);
+  const [page, setPage] = useState(1);
 
   const linkToMain = () => {
     console.log(process.env.REACT_APP_KAKAO_API_KEY);
@@ -32,34 +41,61 @@ const Search = (): JSX.Element => {
   const onChangeKeyword = (e: React.ChangeEvent<HTMLInputElement>) =>
     setKeyword(e.target.value);
 
+  const onChangePage = async (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    try {
+      const response = await fetchBook(keyword, value);
+      setPageableCount(
+        ((response.meta.pageable_count / 10) | 0) +
+          (response.meta.pageable_count % 10 > 0 ? 1 : 0)
+      );
+      setBooks(
+        response.documents.map((book) => {
+          return {
+            book,
+            isMine: myBooks.map((myBook) => myBook.isbn).includes(book.isbn),
+          };
+        })
+      );
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      if (axiosError.response) {
+        alert((axiosError.response.data as MessageResponse).message);
+      }
+    }
+  };
+
   const onSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       setIsNone(false);
+      setPageableCount(0);
+      setPage(1);
       if (keyword === "") {
         setBooks([]);
         return;
       }
+
       try {
-        const response = await fetchBook(keyword, 1);
-        if (response.documents.length <= 0) {
+        const response = await fetchBook(keyword, page);
+        if (response.meta.total_count <= 0) {
           setIsNone(true);
         }
-        Promise.all(
-          response.documents.map(async (book) => {
-            try {
-              const response = await fetchMyBookByIsbn(book.isbn.split(" ")[0]);
-              if (response) {
-                return { book, isMine: true };
-              } else {
-                return { book, isMine: false };
-              }
-            } catch (err) {
-              return { book, isMine: false };
-            }
+        setPageableCount(
+          ((response.meta.pageable_count / 10) | 0) +
+            (response.meta.pageable_count % 10 > 0 ? 1 : 0)
+        );
+
+        setBooks(
+          response.documents.map((book) => {
+            return {
+              book,
+              isMine: myBooks.map((myBook) => myBook.isbn).includes(book.isbn),
+            };
           })
-        ).then((books) => {
-          setBooks(books);
-        });
+        );
       } catch (err) {
         const axiosError = err as AxiosError;
         if (axiosError.response) {
@@ -68,6 +104,22 @@ const Search = (): JSX.Element => {
       }
     }
   };
+
+  const onFetchMyBook = async () => {
+    try {
+      const response = await fetchMyBook();
+      setMyBooks(response);
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      if (axiosError.response) {
+        alert((axiosError.response.data as MessageResponse).message);
+      }
+    }
+  };
+
+  useCallback(() => {
+    onFetchMyBook();
+  }, [setMyBooks]);
 
   const bookList = () => {
     return books.map((book) => {
@@ -128,6 +180,16 @@ const Search = (): JSX.Element => {
       <PageTemplateContents>
         {isNone ? <p>검색결과가 없습니다.</p> : <></>}
         {bookList()}
+
+        {pageableCount > 0 ? (
+          <Pagination
+            count={pageableCount}
+            page={page}
+            onChange={onChangePage}
+          />
+        ) : (
+          <></>
+        )}
       </PageTemplateContents>
 
       <Modal open={isOpenAddMyBookModal} onClose={toggleIsOpenAddMyBookModal}>
