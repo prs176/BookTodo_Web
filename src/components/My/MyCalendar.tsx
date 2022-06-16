@@ -4,7 +4,7 @@ import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
 import MyGoal from "./MyGoal";
 import { CalendarTemplate, RightTemplate } from "./style";
-import { useEffect, useState } from "react";
+import { LegacyRef, useEffect, useState } from "react";
 import ModifyGoalModal from "../Modal/ModifyGoalModal";
 import React from "react";
 import { fetchGoal, modifyGoal } from "../../lib/api/user";
@@ -12,12 +12,16 @@ import { AxiosError } from "axios";
 import { MessageResponse, RecordData } from "../../models/response";
 import { applyPlan, fetchPlan } from "../../lib/api/plan";
 import { fetchRecord } from "../../lib/api/record";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const MyCalendar = (): JSX.Element => {
   const [isOpenModifyGoalModal, setIsOpenModifyGoalModal] = useState(false);
   const [plan, setPlan] = useState<number[]>([]);
   const [goal, setGoal] = useState(0);
   const [records, setRecords] = useState<RecordData[]>([]);
+  const [date, setDate] = useState(new Date());
+  const calendarRef: LegacyRef<Calendar> = React.createRef();
 
   const toggleIsOpenModifyGoalModal = () => {
     setIsOpenModifyGoalModal(!isOpenModifyGoalModal);
@@ -94,6 +98,22 @@ const MyCalendar = (): JSX.Element => {
     }
   };
 
+  const onNextCalendar = () => {
+    const calendarInstance = calendarRef.current!.getInstance();
+
+    calendarInstance.next();
+
+    setDate(new Date(date.setMonth(date.getMonth() + 1)));
+  };
+
+  const onPrevCalendar = () => {
+    const calendarInstance = calendarRef.current!.getInstance();
+
+    calendarInstance.prev();
+
+    setDate(new Date(date.setMonth(date.getMonth() - 1)));
+  };
+
   useEffect(() => {
     onFetchRecords();
     onFetchGoal();
@@ -115,7 +135,23 @@ const MyCalendar = (): JSX.Element => {
         goal={goal}
         isPlanedDay={plan.includes(new Date().getDay())}
       />
-      <Calendar height="100px" view="month" isReadOnly />
+
+      <IconButton onClick={onPrevCalendar}>
+        <ArrowBackIosNewIcon />
+      </IconButton>
+      <IconButton onClick={onNextCalendar}>
+        <ArrowForwardIosIcon />
+      </IconButton>
+      {`${date.getFullYear()}년 ${date.getMonth() + 1}월`}
+
+      <Calendar
+        height="700px"
+        view="month"
+        ref={calendarRef}
+        isReadOnly
+        schedules={[]}
+        scheduleView
+      />
 
       <Modal open={isOpenModifyGoalModal} onClose={toggleIsOpenModifyGoalModal}>
         <ModifyGoalModal
