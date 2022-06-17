@@ -22,8 +22,15 @@ import { AxiosError } from "axios";
 import { useEffect } from "react";
 import { fetchBook } from "../../lib/api/book";
 import { applyRecord } from "../../lib/api/record";
+import { useNavigate } from "react-router";
 
 const MyBook = (): JSX.Element => {
+  const navigate = useNavigate();
+
+  const linkToDetail = (isbn: string) => {
+    navigate(`detail/${isbn}`);
+  };
+
   const [filter, setFilter] = useState("0");
 
   const [isOpenModifyProgressModal, setIsOpenModifyProgressModal] = useState(
@@ -145,6 +152,9 @@ const MyBook = (): JSX.Element => {
           deleteMyBook={() => {
             setSelectedBook(myBook);
             toggleIsOpenDeleteModal();
+          }}
+          linkToDetail={() => {
+            linkToDetail(myBook.record.isbn);
           }}
         ></BookListItem>
       );
