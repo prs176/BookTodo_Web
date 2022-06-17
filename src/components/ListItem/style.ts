@@ -32,3 +32,10 @@ export const TitleTemplate = styled.div`
     height: 40px;
   }
 `;
+
+export const BodyTemplate = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 80%;
+`;

@@ -19,6 +19,10 @@ import { useCallback } from "react";
 const Search = (): JSX.Element => {
   const navigate = useNavigate();
 
+  const linkToDetail = (isbn: string) => {
+    navigate(`/detail/${isbn}`);
+  };
+
   const [isOpenAddMyBookModal, setIsOpenAddMyBookModal] = useState(false);
 
   const [isNone, setIsNone] = useState(false);
@@ -134,6 +138,9 @@ const Search = (): JSX.Element => {
           openAddMyBookModel={() => {
             setSelectedBookIsbn(book.book.isbn.split(" ")[0]);
             toggleIsOpenAddMyBookModal();
+          }}
+          linkToDetail={() => {
+            linkToDetail(book.book.isbn.split(" ")[0]);
           }}
         ></BookListItem>
       );
