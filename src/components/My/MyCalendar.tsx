@@ -22,8 +22,11 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useMemo } from "react";
 import { fetchMyBook } from "../../lib/api/myBook";
 import { fetchBook } from "../../lib/api/book";
+import { useNavigate } from "react-router";
 
 const MyCalendar = (): JSX.Element => {
+  const navigate = useNavigate();
+
   const [isOpenModifyGoalModal, setIsOpenModifyGoalModal] = useState(false);
   const [plan, setPlan] = useState<number[]>([]);
   const [goal, setGoal] = useState(0);
@@ -42,6 +45,14 @@ const MyCalendar = (): JSX.Element => {
       setGoal(response);
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
@@ -54,6 +65,14 @@ const MyCalendar = (): JSX.Element => {
       setPlan(response.map((plan) => plan.day));
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
@@ -85,6 +104,14 @@ const MyCalendar = (): JSX.Element => {
       });
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
@@ -97,6 +124,14 @@ const MyCalendar = (): JSX.Element => {
       setGoal(response);
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
@@ -109,6 +144,14 @@ const MyCalendar = (): JSX.Element => {
       setPlan(response.map((plan) => plan.day));
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
