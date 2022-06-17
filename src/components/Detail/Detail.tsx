@@ -83,9 +83,27 @@ const Detail = (): JSX.Element => {
       try {
         const response = await fetchMyBookByIsbn(isbn!);
         setRecord(response);
-      } catch (err) {}
+      } catch (err) {
+        const axiosError = err as AxiosError;
+        if (
+          axiosError.response &&
+          (axiosError.response.status === 419 ||
+            axiosError.response.status === 401)
+        ) {
+          alert((axiosError.response.data as MessageResponse).message);
+          navigate("/login");
+        }
+      }
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }

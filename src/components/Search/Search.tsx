@@ -66,6 +66,14 @@ const Search = (): JSX.Element => {
       );
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
@@ -102,6 +110,14 @@ const Search = (): JSX.Element => {
         );
       } catch (err) {
         const axiosError = err as AxiosError;
+        if (
+          axiosError.response &&
+          (axiosError.response.status === 419 ||
+            axiosError.response.status === 401)
+        ) {
+          alert((axiosError.response.data as MessageResponse).message);
+          navigate("/login");
+        }
         if (axiosError.response) {
           alert((axiosError.response.data as MessageResponse).message);
         }
@@ -115,6 +131,14 @@ const Search = (): JSX.Element => {
       setMyBooks(response);
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
@@ -165,6 +189,14 @@ const Search = (): JSX.Element => {
       toggleIsOpenAddMyBookModal();
     } catch (err) {
       const axiosError = err as AxiosError;
+      if (
+        axiosError.response &&
+        (axiosError.response.status === 419 ||
+          axiosError.response.status === 401)
+      ) {
+        alert((axiosError.response.data as MessageResponse).message);
+        navigate("/login");
+      }
       if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
