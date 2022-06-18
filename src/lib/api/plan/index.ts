@@ -2,8 +2,21 @@ import { PlanRequest } from "../../../models/request";
 import { PlanData, Response } from "../../../models/response";
 import instance from "../default";
 
-export const applyPlan = async (request: PlanRequest): Promise<PlanData[]> => {
-  const response = await instance.post<Response<PlanData[]>>("/plan", request);
+export const applyPlan = async (
+  request: PlanRequest,
+  token?: string
+): Promise<PlanData[]> => {
+  let config = {};
+  if (token) {
+    config = {
+      headers: { Authorization: token },
+    };
+  }
+  const response = await instance.post<Response<PlanData[]>>(
+    "/plan",
+    request,
+    config
+  );
   return response.data.response;
 };
 
