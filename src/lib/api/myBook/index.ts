@@ -5,6 +5,7 @@ import {
   MessageResponse,
   Response,
 } from "../../../models/response";
+import { getToken } from "../../token/token";
 import instance from "../default";
 
 export const applyMyBook = async (
@@ -15,7 +16,9 @@ export const applyMyBook = async (
 };
 
 export const fetchMyBook = async (): Promise<MyBookRecordData[]> => {
-  const response = await instance.get<Response<MyBookRecordData[]>>("/book");
+  const response = await instance.get<Response<MyBookRecordData[]>>("/book", {
+    headers: { Authorization: getToken() },
+  });
   return response.data.response;
 };
 
