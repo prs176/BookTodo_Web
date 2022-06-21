@@ -175,7 +175,20 @@ const MyCalendar = (): JSX.Element => {
   };
 
   const scheduleList = useMemo(() => {
-    return records.map((record, idx) => {
+    const totals = new Map();
+    records.forEach((record) => {
+      const key = [
+        parseInt(record.date.toString().substring(0, 4)),
+        parseInt(record.date.toString().substring(5, 7)),
+        parseInt(record.date.toString().substring(8, 10)),
+      ].join("-");
+      totals.set(
+        key,
+        totals.get(key) ? totals.get(key) + record.page : record.page
+      );
+    });
+
+    const schedules = records.map((record, idx) => {
       return {
         id: `${idx}`,
         calendarId: "0",
@@ -188,11 +201,25 @@ const MyCalendar = (): JSX.Element => {
               )[0].title
             : "?"
         } - ${record.page} 페이지`,
-        category: "allday",
+        category: "time",
         start: record.date,
         end: record.date,
       };
     });
+
+    Array.from(totals.keys()).forEach((key, idx) => {
+      schedules.push({
+        id: `${records.length + idx}`,
+        calendarId: "1",
+        title: `총 ${totals.get(key)} 페이지`,
+        category: "time",
+        start: new Date(key),
+        end: new Date(key),
+      });
+    });
+    console.log(schedules);
+
+    return schedules;
   }, [records, books]);
 
   useEffect(() => {
@@ -240,8 +267,14 @@ const MyCalendar = (): JSX.Element => {
           {
             id: "0",
             name: "",
-            bgColor: "#9e5fff",
-            borderColor: "#9e5fff",
+            bgColor: "#ffd46c",
+            borderColor: "#ffd46c",
+          },
+          {
+            id: "1",
+            name: "",
+            bgColor: "#ffffff",
+            borderColor: "#ffffff",
           },
         ]}
         isReadOnly
