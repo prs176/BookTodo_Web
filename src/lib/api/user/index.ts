@@ -1,5 +1,6 @@
 import { JoinRequest, LoginRequest } from "../../../models/request";
 import { MessageResponse, Response } from "../../../models/response";
+import { removeCookie, setCookie } from "../../Cookie";
 import instance from "../default";
 
 export const join = async (request: JoinRequest): Promise<void> => {
@@ -12,8 +13,8 @@ export const login = async (request: LoginRequest): Promise<string> => {
     "/user/login",
     request
   );
-  sessionStorage.removeItem("token");
-  sessionStorage.setItem("token", data.response);
+  removeCookie("token");
+  setCookie("token", data.response, 1);
   return data.response;
 };
 

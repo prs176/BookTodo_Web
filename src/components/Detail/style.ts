@@ -7,6 +7,10 @@ export const TitleTemplate = styled.div`
   margin-bottom: 10px;
   h3 {
     margin: 0px;
+    margin-right: 10px;
+  }
+  p {
+    margin: 0px;
   }
 `;
 

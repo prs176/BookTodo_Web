@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { applyPlan } from "../../lib/api/plan";
-import { join } from "../../lib/api/user";
+import { join, login } from "../../lib/api/user";
 import { MessageResponse } from "../../models/response";
 import Register1 from "./Register1";
 import Register2 from "./Register2";
@@ -63,15 +63,16 @@ const Register = (): JSX.Element => {
   ) => setDays(value);
 
   const onComplete = async () => {
-    console.log(goal, days);
     if (goal <= 0 || days.length <= 0) {
       alert("모든 정보를 입력해주세요.");
       return;
     }
     try {
       await join({ nick, birthday: birth, email: id, password, goal });
-      await applyPlan({ days });
-      navigate("/login");
+      const token = await login({ email: id, password });
+      await applyPlan({ days }, token);
+      navigate("/");
+      window.location.reload();
     } catch (err) {
       const axiosError = err as AxiosError;
       if (axiosError.response) {

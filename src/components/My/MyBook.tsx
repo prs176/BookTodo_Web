@@ -79,8 +79,7 @@ const MyBook = (): JSX.Element => {
             ) {
               alert((axiosError.response.data as MessageResponse).message);
               navigate("/login");
-            }
-            if (axiosError.response) {
+            } else if (axiosError.response) {
               alert((axiosError.response.data as MessageResponse).message);
             }
             return null;
@@ -103,8 +102,7 @@ const MyBook = (): JSX.Element => {
       ) {
         alert((axiosError.response.data as MessageResponse).message);
         navigate("/login");
-      }
-      if (axiosError.response) {
+      } else if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
     }
@@ -223,8 +221,7 @@ const MyBook = (): JSX.Element => {
       ) {
         alert((axiosError.response.data as MessageResponse).message);
         navigate("/login");
-      }
-      if (axiosError.response) {
+      } else if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
     }
@@ -247,8 +244,7 @@ const MyBook = (): JSX.Element => {
       ) {
         alert((axiosError.response.data as MessageResponse).message);
         navigate("/login");
-      }
-      if (axiosError.response) {
+      } else if (axiosError.response) {
         alert((axiosError.response.data as MessageResponse).message);
       }
     }

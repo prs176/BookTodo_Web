@@ -23,6 +23,7 @@ import {
   ButtonTemplate,
   ContentTemplate,
   PageTemplate,
+  TextTemplate,
   TitleTemplate,
 } from "./style";
 import { Header, PageTemplateContents } from "../PageTemplate/PageTemplate";
@@ -234,7 +235,18 @@ const Detail = (): JSX.Element => {
           <img alt="" src={book.thumbnail}></img>
           <BodyTemplate>
             <TitleTemplate>
-              <h3>{book.title}</h3>
+              <TextTemplate>
+                <h3>{book.title}</h3>
+                <p>
+                  {`${parseInt(
+                    book.datetime.toString().substring(0, 4)
+                  )}년 ${parseInt(
+                    book.datetime.toString().substring(5, 7)
+                  )}월 ${parseInt(
+                    book.datetime.toString().substring(8, 10)
+                  )}일`}
+                </p>
+              </TextTemplate>
               {record ? "이미추가됨" : ""}
             </TitleTemplate>
 
