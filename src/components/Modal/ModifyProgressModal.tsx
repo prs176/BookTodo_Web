@@ -10,14 +10,16 @@ import {
 
 interface Props {
   goal: number;
+  defaultPage: number;
   modifyMyBookProgress: (page: number) => void;
 }
 
 const ModifyProgressModal = ({
   goal,
+  defaultPage,
   modifyMyBookProgress,
 }: Props): JSX.Element => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(defaultPage);
 
   const onChangePage = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPage(parseInt(e.target.value));
@@ -34,7 +36,7 @@ const ModifyProgressModal = ({
       </ModalContentTemplate>
       <ModalButtonTemplate>
         <div></div>
-        <LabelButton onClick={() => modifyMyBookProgress(page)}>
+        <LabelButton onClick={() => modifyMyBookProgress(page - defaultPage)}>
           완료
         </LabelButton>
       </ModalButtonTemplate>
