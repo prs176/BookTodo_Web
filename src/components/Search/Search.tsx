@@ -59,7 +59,9 @@ const Search = (): JSX.Element => {
         response.documents.map((book) => {
           return {
             book,
-            isMine: myBooks.map((myBook) => myBook.isbn).includes(book.isbn),
+            isMine: myBooks
+              .map((myBook) => myBook.isbn)
+              .includes(book.isbn.split(" ")[0]),
           };
         })
       );
