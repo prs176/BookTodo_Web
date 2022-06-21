@@ -9,6 +9,7 @@ import {
 import React from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { IconButton } from "@mui/material";
+import { RightTemplate } from "./style";
 
 interface Props {
   goal: number;
@@ -35,11 +36,12 @@ const Register2 = ({
       <Header />
 
       <InputPageTemplateContents>
-        <div>
+        <RightTemplate>
           <IconButton onClick={onPrev}>
             <ArrowBackIosNewIcon />
           </IconButton>
-        </div>
+          <div></div>
+        </RightTemplate>
 
         <div>
           <p>책 읽을 요일</p>

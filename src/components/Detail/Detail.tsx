@@ -133,6 +133,10 @@ const Detail = (): JSX.Element => {
   };
 
   const onModifyMyBookProgress = async (page: number) => {
+    if (page <= 0) {
+      alert("새로 읽은 쪽수가 지금까지 읽은 쪽수보다 적습니다.");
+      return;
+    }
     try {
       if (
         page +
@@ -285,6 +289,14 @@ const Detail = (): JSX.Element => {
       >
         <ModifyProgressModal
           goal={record ? record.page : 0}
+          defaultPage={
+            record
+              ? record.Records.map((record) => record.page).reduce(
+                  (a, b) => a + b,
+                  0
+                )
+              : 0
+          }
           modifyMyBookProgress={(page: number) => {
             onModifyMyBookProgress(page);
             toggleIsOpenModifyProgressModal();
