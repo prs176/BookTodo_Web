@@ -10,6 +10,7 @@ import MyCalendar from "./MyCalendar";
 import { TabTemplate } from "./style";
 import { useNavigate } from "react-router";
 import React from "react";
+import { removeCookie } from "../../lib/Cookie";
 
 const My = (): JSX.Element => {
   const [tab, setTab] = useState(0);
@@ -24,8 +25,9 @@ const My = (): JSX.Element => {
   };
 
   const logout = () => {
+    removeCookie("token");
     navigate("/login");
-  };
+  }; // cookie
 
   return (
     <div>
