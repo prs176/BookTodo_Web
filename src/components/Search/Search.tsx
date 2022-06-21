@@ -14,7 +14,7 @@ import {
   fetchMyBookByIsbn,
 } from "../../lib/api/myBook";
 import AddMyBookModal from "../Modal/AddMyBookModal";
-import { useCallback } from "react";
+import { useEffect } from "react";
 
 const Search = (): JSX.Element => {
   const navigate = useNavigate();
@@ -35,7 +35,6 @@ const Search = (): JSX.Element => {
   const [page, setPage] = useState(1);
 
   const linkToMain = () => {
-    console.log(process.env.REACT_APP_KAKAO_API_KEY);
     navigate("/");
   };
 
@@ -104,7 +103,9 @@ const Search = (): JSX.Element => {
           response.documents.map((book) => {
             return {
               book,
-              isMine: myBooks.map((myBook) => myBook.isbn).includes(book.isbn),
+              isMine: myBooks
+                .map((myBook) => myBook.isbn)
+                .includes(book.isbn.split(" ")[0]),
             };
           })
         );
@@ -145,7 +146,7 @@ const Search = (): JSX.Element => {
     }
   };
 
-  useCallback(() => {
+  useEffect(() => {
     onFetchMyBook();
   }, [setMyBooks]);
 
@@ -173,7 +174,7 @@ const Search = (): JSX.Element => {
 
   const onAddBook = async (page: number) => {
     try {
-      await applyMyBook({ isbn: selectedBookIsbn, page });
+      const response = await applyMyBook({ isbn: selectedBookIsbn, page });
       setBooks(
         books.map((book) => {
           if (book.book.isbn.split(" ")[0] === selectedBookIsbn) {
@@ -185,6 +186,12 @@ const Search = (): JSX.Element => {
           return book;
         })
       );
+      const newMyBook = myBooks.map((book) => {
+        return book;
+      });
+      newMyBook.push(response);
+      setMyBooks(newMyBook);
+
       alert("추가되었습니다.");
       toggleIsOpenAddMyBookModal();
     } catch (err) {
